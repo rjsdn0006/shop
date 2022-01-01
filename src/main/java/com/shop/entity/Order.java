@@ -13,13 +13,13 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Setter @Getter
-public class Order {
+public class Order extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "order_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
     // 한명의 회원이 여러번 주문 가능하므로
@@ -29,10 +29,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> orderItems = new ArrayList<>();
 
-    private LocalDateTime regTime;
-
-    private LocalDateTime updateTime;
 }
